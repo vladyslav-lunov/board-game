@@ -12,17 +12,30 @@ function App() {
 
     return (
         <>
-            <h1>Christmas Board Game</h1>
 
             <div>
-                <h2>Players:</h2>
-                <p>{gameState.message}</p>
-                <button onClick={() => dispatch({type: 'ROLL_DICE', cells: CELLS})}>
-                    🎲 Кинути кубик
-                </button>
-                <BoardCanvas cells={CELLS} players={gameState.players}/>
+                <div style={{display: "flex",   justifyContent: "space-between", alignItems: "center"}}>
+                    <button
+                        onClick={() => dispatch({type: 'ROLL_DICE', cells: CELLS})}
+                        style={
+                            {
+                                width: '60px'
+                            }
+                        }
+                    >
+                        🎲 Кинути кубик
+                    </button>
+                    <div style={{display: "flex", flexDirection: "column", width: "500px"}}>
+                        <h2>Players:</h2>
+                        <p>{gameState.message}</p>
+                    </div>
+                </div>
+
+                <div style={{display: "flex", justifyContent: "space-between"}}>
+                    <BoardCanvas cells={CELLS} players={gameState.players}/>
+                    <pre>{JSON.stringify(gameState.players, null, 2)}</pre>
+                </div>
             </div>
-            <pre>{JSON.stringify(gameState.players, null, 2)}</pre>
 
         </>
     )

@@ -8,6 +8,18 @@ const CELL_COLORS: Record<string, string> = {
     key: '#4caf50',
     jail: '#888888',
     teleport: '#e91e63',
+    start:    '#27ae60',  // ← додайте
+    finish:   '#8e44ad',
+}
+
+const CELL_EMOJI: Record<string, string> = {
+    normal:   '',
+    question: '❓',
+    key:      '🔑',
+    jail:     '🔒',
+    teleport: '🌀',
+    start:    '🚀',
+    finish:   '🏁',
 }
 
 function drawCell(ctx: CanvasRenderingContext2D, cell: Cell) {
@@ -20,15 +32,21 @@ function drawCell(ctx: CanvasRenderingContext2D, cell: Cell) {
     ctx.stroke()
 
     ctx.fillStyle = '#000'
-    ctx.font = '12px Arial'
+    ctx.font = '10px Arial'
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
-    ctx.fillText(String(cell.id), cell.x, cell.y)
+    ctx.fillText(String(cell.id), cell.x, cell.y - 7)
+
+    const emoji = CELL_EMOJI[cell.type]
+    if (emoji) {
+        ctx.font = '14px Arial'
+        ctx.fillText(emoji, cell.x, cell.y + 8)
+    }
 }
 
 function drawPlayer(ctx: CanvasRenderingContext2D, cell: Cell, player: Player, offset: number) {
     ctx.beginPath()
-    ctx.arc(cell.x + offset, cell.y - 30, 10, 0, Math.PI * 2)
+    ctx.arc(cell.x + offset, cell.y - 5, 10, 0, Math.PI * 2)
     ctx.fillStyle = player.color
     ctx.fill()
     ctx.strokeStyle = '#fff'

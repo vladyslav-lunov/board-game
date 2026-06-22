@@ -4,15 +4,16 @@ export type Cell = {
     id: number,
     x: number,
     y: number,
-    type: CellType
+    type: CellType,
+    teleportTo?: number
 }
 
 export const CELLS: Cell[] = [
     // рядок 1 — зліва направо (y: 500)
-    { id: 0,  x: 100, y: 500, type: 'normal' },
+    { id: 0,  x: 100, y: 500, type: 'start' },
     { id: 1,  x: 160, y: 500, type: 'normal' },
     { id: 2,  x: 220, y: 500, type: 'question' },
-    { id: 3,  x: 280, y: 500, type: 'normal' },
+    { id: 3,  x: 280, y: 500, type: 'teleport', teleportTo: 10 },
     { id: 4,  x: 340, y: 500, type: 'key' },
     { id: 5,  x: 400, y: 500, type: 'normal' },
     { id: 6,  x: 460, y: 500, type: 'jail' },
@@ -41,14 +42,14 @@ export const CELLS: Cell[] = [
     // рядок 3 — зліва направо (y: 260)
     { id: 22, x: 100, y: 260, type: 'normal' },
     { id: 23, x: 160, y: 260, type: 'question' },
-    { id: 24, x: 220, y: 260, type: 'normal' },
+    { id: 24, x: 220, y: 260, type: 'teleport', teleportTo: 14 },
     { id: 25, x: 280, y: 260, type: 'key' },
     { id: 26, x: 340, y: 260, type: 'normal' },
     { id: 27, x: 400, y: 260, type: 'jail' },
     { id: 28, x: 460, y: 260, type: 'normal' },
     { id: 29, x: 520, y: 260, type: 'question' },
     { id: 30, x: 580, y: 260, type: 'normal' },
-    { id: 31, x: 640, y: 260, type: 'normal' },
+    { id: 31, x: 640, y: 260, type: 'finish' },
 ]
 
 export type Player = {
@@ -57,12 +58,13 @@ export type Player = {
     position:number,
     color: string,
     score: number,
-    keys: boolean[],
+    keys: number,
     skipNextTurn: boolean,
-    hasKey: boolean
+    hasKey: boolean,
+    finishPlace: number | null
 }
 
 export const INIT_PLAYERS : Player[] = [
-    {id: 0, name: "Player 1", position: 0, color:  '#e74c3c', skipNextTurn: false, hasKey: false, keys: [], score: 0},
-    { id: 1, name: 'Player 2', position: 0, color: '#3498db', skipNextTurn: false, hasKey: false, keys: [], score: 0 },
+    {id: 0, name: "Player 1", position: 0, color:  '#e74c3c', skipNextTurn: false, hasKey: false, keys: 0, score: 0, finishPlace: null},
+    { id: 1, name: 'Player 2', position: 0, color: '#3498db', skipNextTurn: false, hasKey: false, keys: 0, score: 0, finishPlace: null },
 ]

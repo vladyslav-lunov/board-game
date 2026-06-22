@@ -12,31 +12,60 @@ function App() {
 
     return (
         <>
-
-            <div>
-                <div style={{display: "flex",   justifyContent: "space-between", alignItems: "center"}}>
-                    <button
-                        onClick={() => dispatch({type: 'ROLL_DICE', cells: CELLS})}
-                        style={
-                            {
-                                width: '60px'
-                            }
-                        }
-                    >
-                        🎲 Кинути кубик
-                    </button>
-                    <div style={{display: "flex", flexDirection: "column", width: "500px"}}>
-                        <h2>Players:</h2>
-                        <p>{gameState.message}</p>
+            {gameState.gameOver ? (
+                    <div>
+                        <h2>🎄 Гра завершена!</h2>
+                        {[...gameState.players]
+                            .sort((a, b) => b.score - a.score)
+                            .map(p => (
+                                <p key={p.id}>
+                                    {p.finishPlace} місце — {p.name}: {p.score} балів
+                                </p>
+                            ))}
                     </div>
-                </div>
+                ) :
+                <div>
+                    <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                        {gameState.waitingForAnswer ? (
+                            <div>
+                                <p>❓ 2 + 2 = ?</p>
+                                <button onClick={() => dispatch({type: 'ANSWER_QUESTION', correct: true})}>
+                                    ✅ Правильно
+                                </button>
+                                <button onClick={() => dispatch({type: 'ANSWER_QUESTION', correct: false})}>
+                                    ❌ Неправильно
+                                </button>
+                            </div>
+                        ) : (
+                            <button onClick={() => dispatch({type: 'ROLL_DICE', cells: CELLS})}>
+                                🎲 Кинути кубик
+                            </button>
+                        )}
+                        <div style={{display: "flex", flexDirection: "column", width: "500px"}}>
+                            <h2>Players:</h2>
+                            <p>{gameState.lastMessage}</p>
+                        </div>
+                    </div>
 
-                <div style={{display: "flex", justifyContent: "space-between"}}>
-                    <BoardCanvas cells={CELLS} players={gameState.players}/>
-                    <pre>{JSON.stringify(gameState.players, null, 2)}</pre>
-                </div>
-            </div>
+                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                        <BoardCanvas cells={CELLS} players={gameState.players}/>
+                        {gameState.players.map(p => (
+                            <span key={p.id} style={{color: p.color, marginRight: 16}}>
+              {p.name}: {p.score} балів | ключів: {p.keys}
+                                {p.skipNextTurn ? ' 🔒' : ''}
+                                {p.hasKey ? ' 🗝️' : ''}
+            </span>
+                        ))}
 
+                    </div>
+                    <ul>
+                        {
+                            gameState.history.map((elem, index) => <li key={elem}>
+                                {index + 1} : {elem}
+                            </li>)}
+                    </ul>
+                </div>
+            }
         </>
     )
 }
